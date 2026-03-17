@@ -414,6 +414,75 @@
     .right-footer a:hover { text-decoration: underline; color: var(--text); }
     .right-footer span { color: #ccc; }
 
+    /* ─── Buy Me a Coffee sidebar widget ─── */
+    .bmc-widget {
+      margin-top: 14px;
+      background: #fff7ed;
+      border: 1px solid #fcd9a8;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .bmc-widget .bmc-title {
+      font-size: 13px; font-weight: 800; margin-bottom: 4px; color: #92400e;
+    }
+    .bmc-widget .bmc-sub {
+      font-size: 11px; color: #a16207; line-height: 1.5; margin-bottom: 10px;
+    }
+    .bmc-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      background: #FFDD00; color: #000; font-weight: 800; font-size: 13px;
+      padding: 9px 18px; border-radius: 8px; text-decoration: none;
+      border: none; cursor: pointer; width: 100%;
+      transition: background .15s, transform .1s;
+      letter-spacing: .2px;
+    }
+    .bmc-btn:hover { background: #f5d000; transform: translateY(-1px); }
+    .bmc-btn:active { transform: translateY(0); }
+    .bmc-btn img { width: 20px; height: 20px; }
+
+    /* ─── Tip Modal ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0,0,0,.45);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 400px;
+      padding: 32px 28px 26px;
+      text-align: center;
+      transform: translateY(12px) scale(.97);
+      transition: transform .2s;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+    .modal-emoji { font-size: 52px; line-height: 1; margin-bottom: 14px; }
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+    .modal-body {
+      font-size: 14px; color: #555; line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .modal-body strong { color: var(--text); }
+    .modal-bmc-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: #FFDD00; color: #000; font-weight: 800; font-size: 15px;
+      padding: 13px 20px; border-radius: 10px; text-decoration: none;
+      width: 100%; margin-bottom: 10px;
+      transition: background .15s, transform .1s;
+    }
+    .modal-bmc-btn:hover { background: #f5d000; transform: translateY(-1px); }
+    .modal-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 13px; color: var(--muted); padding: 6px;
+      transition: color .12s;
+    }
+    .modal-close:hover { color: var(--text); }
+
     /* ─── Misc ─── */
     @keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
     .pop { animation: pop .18s ease; }
@@ -614,9 +683,35 @@
         <div style="font-size:11px;color:var(--muted);line-height:1.6">Ideas, questions, or just want to share a cat pic?</div>
         <a href="mailto:meow@onlycats.lol" style="display:inline-block;margin-top:8px;background:var(--teal);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;text-decoration:none;letter-spacing:.3px;">meow@onlycats.lol</a>
       </div>
+
+      <div class="bmc-widget">
+        <div class="bmc-title">☕ Support OnlyCats</div>
+        <div class="bmc-sub">If this made you smile, buy us a coffee — the cats demand premium kibble.</div>
+        <a class="bmc-btn" href="https://buymeacoffee.com/onlycats.lol" target="_blank" rel="noopener">
+          <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="BMC" />
+          Buy me a coffee
+        </a>
+      </div>
     </aside>
 
   </div><!-- /layout -->
+<!-- ── Tip / Support Modal ── -->
+<div class="modal-overlay" id="tipModal" onclick="closeTipModal(event)">
+  <div class="modal">
+    <div class="modal-emoji">🐾☕</div>
+    <div class="modal-title">Psst — this is a parody site!</div>
+    <div class="modal-body">
+      There's <strong>no real subscription</strong> and no exclusive content hiding behind a paywall — just an infinite feed of adorable cats, completely free. 🐱<br><br>
+      But if OnlyCats brought a smile to your face, you're totally welcome to buy the cats (and their human) a coffee. It keeps the kibble flowing and the servers purring.
+    </div>
+    <a class="modal-bmc-btn" href="https://buymeacoffee.com/onlycats.lol" target="_blank" rel="noopener">
+      <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="" style="width:22px;height:22px" />
+      Support OnlyCats ☕
+    </a>
+    <button class="modal-close" onclick="closeTipModal()">No thanks, I'll just enjoy the cats 🐈</button>
+  </div>
+</div>
+
 </div><!-- /page-push -->
 
 <script>
@@ -724,7 +819,7 @@
         <button class="act">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </button>
-        <button class="act-tip">
+        <button class="act-tip" onclick="openTipModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
           SEND TIP
         </button>
@@ -779,6 +874,18 @@
     const n = parseInt(el.textContent);
     el.textContent = (n + (on ? 1 : -1)) + ' purrs';
   }
+
+  /* ── Tip modal ── */
+  function openTipModal() {
+    document.getElementById('tipModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeTipModal(e) {
+    if (e && e.target !== document.getElementById('tipModal')) return;
+    document.getElementById('tipModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTipModal(); });
 
   /* ── Cookie banner ── */
   function dismissBanner() {
