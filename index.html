@@ -427,6 +427,57 @@
     .right-footer a:hover { text-decoration: underline; color: var(--text); }
     .right-footer span { color: #ccc; }
 
+    /* ─── Coming Soon Modal ─── */
+    .cs-modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0,0,0,.45);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s;
+    }
+    .cs-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .cs-modal {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 420px;
+      padding: 34px 30px 28px;
+      text-align: center;
+      transform: translateY(12px) scale(.97);
+      transition: transform .2s;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+    }
+    .cs-modal-overlay.open .cs-modal { transform: translateY(0) scale(1); }
+    .cs-modal-emoji { font-size: 48px; line-height: 1; margin-bottom: 14px; }
+    .cs-modal-title { font-size: 21px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+    .cs-modal-body { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 22px; }
+
+    .cs-form { display: flex; flex-direction: column; gap: 10px; }
+    .cs-input {
+      width: 100%; padding: 12px 16px; font-size: 14px;
+      border: 1.5px solid var(--border); border-radius: 8px; outline: none;
+      transition: border-color .15s;
+    }
+    .cs-input:focus { border-color: var(--teal); }
+    .cs-submit {
+      background: var(--teal); color: #fff; border: none;
+      border-radius: 8px; padding: 13px; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: background .15s;
+    }
+    .cs-submit:hover { background: var(--teal-dark); }
+    .cs-submit:disabled { background: #aaa; cursor: default; }
+
+    .cs-success { display: none; flex-direction: column; align-items: center; gap: 10px; }
+    .cs-success.show { display: flex; }
+    .cs-success-emoji { font-size: 52px; }
+    .cs-success-msg { font-size: 15px; color: #333; font-weight: 600; }
+    .cs-success-sub { font-size: 13px; color: var(--muted); }
+
+    .cs-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 13px; color: var(--muted); margin-top: 14px; padding: 4px;
+    }
+    .cs-close:hover { color: var(--text); }
+
     /* ─── Buy Me a Coffee sidebar widget ─── */
     .bmc-widget {
       margin-top: 14px;
@@ -556,7 +607,7 @@
         More
       </a>
 
-      <button class="nav-new-post">
+      <button class="nav-new-post" onclick="openCSModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         NEW POST
       </button>
@@ -572,7 +623,7 @@
         </button>
       </div>
 
-      <div class="composer">
+      <div class="composer" onclick="openCSModal()" style="cursor:pointer">
         <div class="composer-text">Create a new post …</div>
         <div class="composer-actions">
           <button class="icon-btn" title="Image">
@@ -710,6 +761,30 @@
     </aside>
 
   </div><!-- /layout -->
+<!-- ── Coming Soon / Post Modal ── -->
+<div class="cs-modal-overlay" id="csModal" onclick="closeCSModal(event)">
+  <div class="cs-modal">
+    <div class="cs-modal-emoji">🚧🐾</div>
+    <div class="cs-modal-title">We're building this!</div>
+    <div class="cs-modal-body">
+      Posting your own cat content is coming soon. Drop your email and you'll be the <strong>first to know</strong> when it's live — so you can share your fluffiest, most chaotic cats with the world.
+    </div>
+
+    <div class="cs-form" id="csForm">
+      <input class="cs-input" type="email" id="csEmail" placeholder="yourname@example.com" required />
+      <button class="cs-submit" id="csSubmitBtn" onclick="submitCSForm()">Notify me when it's ready 🐱</button>
+    </div>
+
+    <div class="cs-success" id="csSuccess">
+      <div class="cs-success-emoji">🎉</div>
+      <div class="cs-success-msg">You're on the list!</div>
+      <div class="cs-success-sub">We'll meow at you as soon as posting goes live.</div>
+    </div>
+
+    <button class="cs-close" onclick="closeCSModal()">Maybe later</button>
+  </div>
+</div>
+
 <!-- ── Tip / Support Modal ── -->
 <div class="modal-overlay" id="tipModal" onclick="closeTipModal(event)">
   <div class="modal">
@@ -890,6 +965,47 @@
     el.textContent = (n + (on ? 1 : -1)) + ' purrs';
   }
 
+  /* ── Coming Soon modal ── */
+  function openCSModal() {
+    document.getElementById('csModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // reset to form state if previously submitted
+    document.getElementById('csForm').style.display = 'flex';
+    document.getElementById('csSuccess').classList.remove('show');
+    document.getElementById('csEmail').value = '';
+    document.getElementById('csSubmitBtn').disabled = false;
+    document.getElementById('csSubmitBtn').textContent = 'Notify me when it\'s ready 🐱';
+  }
+  function closeCSModal(e) {
+    if (e && e.target !== document.getElementById('csModal')) return;
+    document.getElementById('csModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  async function submitCSForm() {
+    const email = document.getElementById('csEmail').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('csEmail').focus();
+      document.getElementById('csEmail').style.borderColor = '#f04';
+      setTimeout(() => document.getElementById('csEmail').style.borderColor = '', 1200);
+      return;
+    }
+    const btn = document.getElementById('csSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      await fetch('https://yourform.site/api/f/frm_8mn1rru78v4o', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+    } catch (_) { /* silently succeed — don't block UX on network errors */ }
+    document.getElementById('csForm').style.display = 'none';
+    document.getElementById('csSuccess').classList.add('show');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeCSModal(); closeTipModal(); }
+  });
+
   /* ── Tip modal ── */
   function openTipModal() {
     document.getElementById('tipModal').classList.add('open');
@@ -900,8 +1016,6 @@
     document.getElementById('tipModal').classList.remove('open');
     document.body.style.overflow = '';
   }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTipModal(); });
-
   /* ── Cookie banner ── */
   function dismissBanner() {
     document.getElementById('cookieBanner').classList.add('gone');
