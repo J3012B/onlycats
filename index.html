@@ -10,310 +10,407 @@
     :root {
       --teal: #00aff0;
       --teal-dark: #0090c8;
-      --bg: #f5f5f5;
-      --white: #ffffff;
-      --border: #e0e0e0;
-      --text: #333333;
-      --text-light: #777777;
-      --sidebar-w: 260px;
-      --right-w: 220px;
-      --banner-h: 36px;
+      --border: #ebebeb;
+      --text: #2a2a2a;
+      --muted: #8a8a8a;
+      --bg-page: #f0f0f0;
+      --banner-h: 38px;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      background: var(--bg-page);
       color: var(--text);
       min-height: 100vh;
     }
 
-    /* ── Cookie Banner ── */
+    /* ─── Cookie Banner ─── */
     .cookie-banner {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: #1a1a2e; color: #ccc; font-size: 12px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      background: #1b1b2f; color: #bbb; font-size: 12px;
       display: flex; align-items: center; justify-content: center;
-      gap: 12px; padding: 8px 16px; height: var(--banner-h);
+      gap: 14px; padding: 0 20px; height: var(--banner-h);
     }
     .cookie-banner a { color: var(--teal); text-decoration: none; }
-    .btn-only {
-      background: transparent; border: 1px solid #aaa; color: #aaa;
-      padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px;
+    .cookie-banner a:hover { text-decoration: underline; }
+    .cookie-banner.gone { display: none; }
+    .btn-necessary {
+      background: transparent; border: 1px solid #666; color: #999;
+      padding: 4px 11px; border-radius: 4px; cursor: pointer; font-size: 11px;
+      font-weight: 600; letter-spacing: .3px; white-space: nowrap;
     }
-    .btn-accept {
+    .btn-accept-all {
       background: var(--teal); border: none; color: #fff;
-      padding: 5px 12px; border-radius: 4px; cursor: pointer;
-      font-size: 11px; font-weight: 700;
+      padding: 5px 13px; border-radius: 5px; cursor: pointer;
+      font-size: 11px; font-weight: 700; white-space: nowrap;
     }
-    .btn-accept:hover { background: var(--teal-dark); }
-    .cookie-banner.hidden { display: none; }
+    .btn-accept-all:hover { background: var(--teal-dark); }
 
-    /* ── App shell ── */
-    .app { display: flex; padding-top: var(--banner-h); min-height: 100vh; }
-    .app.no-banner { padding-top: 0; }
+    /* ─── Page shell ─── */
+    .page-push { padding-top: var(--banner-h); transition: padding-top .15s; }
 
-    /* ── Left Sidebar ── */
+    /* ─── Centered 3-column wrapper ─── */
+    .layout {
+      max-width: 1060px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      background: #fff;
+      min-height: calc(100vh - var(--banner-h));
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    /* ─── Left Sidebar ─── */
     .sidebar {
-      width: var(--sidebar-w); position: fixed;
-      top: var(--banner-h); bottom: 0; left: 0;
-      background: var(--white); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      padding: 20px 16px; overflow-y: auto; z-index: 100;
-      transition: top .2s;
+      width: 235px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: var(--banner-h);
+      height: calc(100vh - var(--banner-h));
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 14px 18px;
+      transition: top .15s;
     }
-    .logo {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 24px; text-decoration: none; color: var(--text);
+
+    .user-badge {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--teal); color: #fff;
+      font-size: 14px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 26px; flex-shrink: 0; cursor: pointer;
     }
-    .logo-icon {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: var(--teal); color: #fff; font-size: 20px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .logo-text { font-size: 18px; font-weight: 800; }
-    .logo-text span { color: var(--teal); }
 
     .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 12px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 12px; border-radius: 8px;
       font-size: 15px; color: var(--text); text-decoration: none;
-      transition: background .15s; margin-bottom: 2px;
+      transition: background .12s; margin-bottom: 1px; cursor: pointer;
     }
-    .nav-item:hover { background: #f0f0f0; }
+    .nav-item:hover { background: #f5f5f5; }
     .nav-item.active { font-weight: 700; }
-    .nav-item svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .nav-item svg { width: 21px; height: 21px; flex-shrink: 0; stroke-width: 1.8; }
 
     .nav-new-post {
-      margin-top: auto; padding-top: 20px;
+      margin-top: 22px;
       background: var(--teal); color: #fff; border: none;
-      border-radius: 24px; padding: 12px 20px; font-size: 14px;
-      font-weight: 700; cursor: pointer;
+      border-radius: 24px; padding: 13px 20px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      gap: 8px; letter-spacing: .5px; transition: background .15s;
+      gap: 8px; letter-spacing: .4px;
+      transition: background .12s; width: 100%;
     }
     .nav-new-post:hover { background: var(--teal-dark); }
+    .nav-new-post svg { width: 15px; height: 15px; }
 
-    /* ── Feed wrapper ── */
-    .feed-wrapper {
-      margin-left: var(--sidebar-w); margin-right: var(--right-w);
-      flex: 1; display: flex; justify-content: center;
+    /* ─── Center Feed ─── */
+    .feed-col {
+      flex: 1;
+      min-width: 0;
+      border-right: 1px solid var(--border);
     }
-    .feed { width: 100%; max-width: 560px; padding-bottom: 80px; }
 
-    /* ── Feed header (sticky) ── */
     .feed-header {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 14px 18px; display: flex; align-items: center;
-      justify-content: space-between; position: sticky;
-      top: var(--banner-h); z-index: 50; transition: top .2s;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: var(--banner-h); z-index: 50;
+      background: #fff; transition: top .15s;
     }
-    .feed-header h2 { font-size: 16px; font-weight: 700; letter-spacing: .5px; }
-    .dots-btn { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: 20px; }
+    .feed-header h2 { font-size: 16px; font-weight: 700; letter-spacing: .4px; }
+    .icon-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); display: flex; align-items: center;
+      padding: 4px; border-radius: 4px;
+    }
+    .icon-btn:hover { color: var(--text); background: #f5f5f5; }
+    .icon-btn svg { width: 18px; height: 18px; }
 
-    /* ── Composer ── */
+    /* ─── Composer ─── */
     .composer {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 14px 18px;
+      padding: 14px 20px 12px;
+      border-bottom: 1px solid var(--border);
     }
-    .composer-input {
-      width: 100%; border: none; outline: none;
-      font-size: 14px; color: #aaa; cursor: text; margin-bottom: 12px;
+    .composer-text {
+      font-size: 14px; color: #bbb; margin-bottom: 14px; cursor: text;
     }
-    .composer-actions { display: flex; align-items: center; gap: 16px; }
-    .composer-actions button {
-      background: none; border: none; cursor: pointer; color: var(--text-light);
-      display: flex; align-items: center;
-    }
-    .composer-actions svg { width: 20px; height: 20px; }
+    .composer-actions { display: flex; align-items: center; gap: 18px; }
+    .composer-actions .icon-btn svg { width: 20px; height: 20px; }
 
-    /* ── Filter bar ── */
+    /* ─── Filter tabs ─── */
     .filter-bar {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 10px 18px; display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
     }
     .filter-pill {
       background: var(--teal); color: #fff; border: none;
-      border-radius: 20px; padding: 5px 14px; font-size: 13px;
-      font-weight: 600; cursor: pointer;
+      border-radius: 20px; padding: 5px 16px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
     }
-    .filter-edit { background: none; border: none; cursor: pointer; color: var(--text-light); }
+    .filter-pill.inactive {
+      background: #f0f0f0; color: var(--text);
+    }
+    .filter-pill.inactive:hover { background: #e8e8e8; }
 
-    /* ── Email banner ── */
-    .email-banner {
-      background: #fff8e1; border-bottom: 1px solid #ffe082;
-      padding: 10px 18px; display: flex; align-items: center;
-      justify-content: space-between; font-size: 13px; color: #b8860b; gap: 12px;
+    /* ─── Email verify banner ─── */
+    .verify-banner {
+      border-bottom: 1px solid var(--border);
+      padding: 11px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-left: 4px solid #f04;
+      background: #fff9f9;
+      gap: 12px;
     }
-    .email-banner .left { display: flex; align-items: center; gap: 8px; }
+    .verify-banner .vb-left { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #c00; }
+    .verify-banner svg { width: 15px; height: 15px; flex-shrink: 0; }
     .btn-verify {
-      background: var(--teal); color: #fff; border: none; border-radius: 4px;
-      padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+      background: var(--teal); color: #fff; border: none; border-radius: 5px;
+      padding: 7px 15px; font-size: 12px; font-weight: 700;
+      cursor: pointer; white-space: nowrap; letter-spacing: .3px;
     }
+    .btn-verify:hover { background: var(--teal-dark); }
 
-    /* ── Post card ── */
+    /* ─── Post card ─── */
     .post-card {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 16px 18px;
-      animation: fadeIn .3s ease;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp .25s ease;
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     .post-header {
       display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px;
     }
     .post-avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      flex-shrink: 0; overflow: hidden;
+      width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; background: #f0f0f0;
+      font-size: 25px; overflow: hidden;
     }
     .post-meta { flex: 1; min-width: 0; }
     .post-name {
-      font-weight: 700; font-size: 14px;
-      display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+      font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
     }
-    .verified { color: var(--teal); font-size: 13px; }
-    .post-handle { color: var(--text-light); font-size: 12px; margin-top: 1px; }
-    .post-time-menu { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .post-time { color: var(--text-light); font-size: 12px; }
-    .menu-btn { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: 18px; line-height: 1; }
+    .post-name .vc {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; background: var(--teal); border-radius: 50%;
+      color: #fff; font-size: 10px; font-weight: 900; flex-shrink: 0;
+    }
+    .post-handle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .post-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .post-time { color: var(--muted); font-size: 12px; }
 
-    .post-body { font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+    .post-body {
+      font-size: 14px; line-height: 1.65; margin-bottom: 12px; color: #333;
+    }
     .post-body a { color: var(--teal); text-decoration: none; }
     .post-body a:hover { text-decoration: underline; }
 
-    /* ── Cat image ── */
-    .cat-img-wrap {
-      border-radius: 10px; overflow: hidden; margin-bottom: 12px;
-      background: #eee; position: relative;
-      min-height: 240px; display: flex; align-items: center; justify-content: center;
+    /* ─── Cat image ─── */
+    .cat-wrap {
+      border-radius: 8px; overflow: hidden; margin-bottom: 13px;
+      background: #f0f0f0; position: relative;
+      min-height: 260px; display: flex; align-items: center; justify-content: center;
     }
-    .cat-img-wrap img {
+    .cat-wrap img {
       width: 100%; display: block; object-fit: cover;
-      transition: opacity .3s;
+      opacity: 0; transition: opacity .3s;
     }
-    .cat-img-wrap img.loading { opacity: 0; }
-    .cat-img-wrap img.loaded { opacity: 1; }
-    .img-shimmer {
+    .cat-wrap img.in { opacity: 1; }
+    .shimmer {
       position: absolute; inset: 0;
-      background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+      background: linear-gradient(90deg,#eaeaea 25%,#f5f5f5 50%,#eaeaea 75%);
       background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
+      animation: shim 1.3s infinite;
     }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-    .free-tag {
+    @keyframes shim { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .free-badge {
       position: absolute; top: 10px; left: 10px;
-      background: rgba(0,0,0,.55); color: #fff;
-      font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+      background: rgba(0,0,0,.52); color: #fff;
+      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 4px;
+      letter-spacing: .3px;
     }
 
-    .tag-pill {
-      display: inline-block; background: rgba(0,175,240,.12); color: var(--teal);
-      font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-right: 4px; margin-bottom: 4px;
-    }
-    .tags-row { margin-bottom: 10px; }
-
-    /* ── Post actions ── */
+    /* ─── Post actions ─── */
     .post-actions {
-      display: flex; align-items: center; gap: 20px; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 2px;
+      margin-bottom: 8px;
     }
-    .action-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--text-light); display: flex; align-items: center;
-      gap: 5px; font-size: 13px; transition: color .15s;
+    .act {
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center; gap: 5px;
+      font-size: 13px; padding: 6px 8px; border-radius: 6px;
+      transition: color .12s, background .12s;
     }
-    .action-btn:hover { color: var(--teal); }
-    .action-btn svg { width: 18px; height: 18px; }
-    .action-btn.liked { color: #e0245e; }
-    .tip-btn {
-      background: none; border: none; cursor: pointer; color: var(--text-light);
-      display: flex; align-items: center; gap: 5px; font-size: 12px; margin-left: auto;
+    .act:hover { color: var(--teal); background: #f0f0f0; }
+    .act svg { width: 18px; height: 18px; }
+    .act.liked { color: #e0245e; }
+    .act-tip {
+      margin-left: auto;
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      display: flex; align-items: center; gap: 5px; font-size: 12px;
+      padding: 6px 8px; border-radius: 6px; font-weight: 500;
+      letter-spacing: .2px; transition: color .12s, background .12s;
     }
-    .tip-btn:hover { color: var(--teal); }
-    .bookmark-btn { background: none; border: none; cursor: pointer; color: var(--text-light); }
-    .bookmark-btn:hover { color: var(--teal); }
-    .post-likes { font-size: 13px; font-weight: 600; }
+    .act-tip:hover { color: var(--teal); background: #f0f0f0; }
+    .act-tip svg { width: 16px; height: 16px; }
+    .act-bm {
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      padding: 6px 8px; border-radius: 6px; display: flex;
+      transition: color .12s, background .12s;
+    }
+    .act-bm:hover { color: var(--teal); background: #f0f0f0; }
+    .act-bm svg { width: 18px; height: 18px; }
+    .post-likes { font-size: 13px; font-weight: 700; color: var(--text); }
 
-    /* ── Load more / Spinner ── */
-    .load-trigger { height: 60px; display: flex; align-items: center; justify-content: center; }
+    /* ─── Spinner / infinite scroll ─── */
+    .load-sentinel { height: 72px; display: flex; align-items: center; justify-content: center; }
     .spinner {
-      width: 28px; height: 28px; border: 3px solid var(--border);
-      border-top-color: var(--teal); border-radius: 50%;
-      animation: spin .8s linear infinite;
+      width: 26px; height: 26px;
+      border: 3px solid #e0e0e0; border-top-color: var(--teal);
+      border-radius: 50%; animation: spin .75s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner.hidden { display: none; }
+    .spinner.hide { display: none; }
 
-    /* ── Right Sidebar ── */
-    .right-sidebar {
-      width: var(--right-w); position: fixed;
-      top: var(--banner-h); right: 0; bottom: 0;
-      background: var(--white); border-left: 1px solid var(--border);
-      padding: 16px 12px; overflow-y: auto; z-index: 100;
-      transition: top .2s;
+    /* ─── Right Sidebar ─── */
+    .right-col {
+      width: 305px;
+      flex-shrink: 0;
+      position: sticky;
+      top: var(--banner-h);
+      height: calc(100vh - var(--banner-h));
+      overflow-y: auto;
+      padding: 16px 14px;
+      transition: top .15s;
     }
-    .search-box {
-      display: flex; align-items: center; background: var(--bg);
-      border: 1px solid var(--border); border-radius: 20px;
-      padding: 6px 12px; gap: 6px; margin-bottom: 16px;
-    }
-    .search-box input { border: none; background: none; outline: none; font-size: 12px; width: 100%; }
-    .search-box svg { width: 14px; height: 14px; color: var(--text-light); flex-shrink: 0; }
 
-    .sugg-header {
-      display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      background: #f5f5f5; border: 1px solid var(--border);
+      border-radius: 22px; padding: 8px 14px; margin-bottom: 18px;
     }
-    .sugg-header h3 {
-      font-size: 11px; font-weight: 700; letter-spacing: .8px;
-      text-transform: uppercase; color: var(--text-light);
+    .search-wrap svg { width: 15px; height: 15px; color: var(--muted); flex-shrink: 0; }
+    .search-wrap input {
+      border: none; background: none; outline: none;
+      font-size: 13px; color: var(--text); width: 100%;
     }
-    .sugg-header .hs { display: flex; gap: 4px; }
-    .sugg-header button { background: none; border: none; cursor: pointer; color: var(--text-light); }
-    .sugg-header svg { width: 15px; height: 15px; }
+    .search-wrap input::placeholder { color: #bbb; }
 
+    .sugg-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .sugg-hdr h3 {
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .sugg-hdr-btns { display: flex; gap: 2px; }
+    .sugg-hdr-btns button {
+      background: none; border: none; cursor: pointer; color: var(--muted);
+      padding: 4px; border-radius: 4px;
+    }
+    .sugg-hdr-btns button:hover { color: var(--text); background: #f5f5f5; }
+    .sugg-hdr-btns svg { width: 15px; height: 15px; display: block; }
+
+    /* Landscape suggestion card — mirrors OnlyFans style */
     .sugg-card {
-      border-radius: 8px; overflow: hidden; margin-bottom: 10px;
-      cursor: pointer; border: 1px solid var(--border); position: relative;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: box-shadow .15s;
     }
-    .sugg-bg {
-      width: 100%; height: 68px;
-      display: flex; align-items: center; justify-content: center; font-size: 34px;
+    .sugg-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+
+    .sugg-banner {
+      height: 72px;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 7px 8px;
+      overflow: hidden;
     }
-    .sugg-info { padding: 20px 8px 8px; background: var(--white); }
-    .sugg-avatar {
-      position: absolute; top: 42px; left: 8px;
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 2px solid var(--white); background: var(--white);
-      font-size: 16px; display: flex; align-items: center; justify-content: center;
+    .sugg-banner-bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; /* big emoji as bg fill */
     }
     .sugg-free {
-      position: absolute; top: 6px; left: 6px;
-      background: rgba(0,0,0,.55); color: #fff;
-      font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px;
+      position: relative; z-index: 1;
+      background: rgba(0,0,0,.5); color: #fff;
+      font-size: 9px; font-weight: 700; padding: 3px 7px;
+      border-radius: 3px; letter-spacing: .4px; align-self: flex-start;
     }
-    .sugg-menu {
-      position: absolute; top: 6px; right: 6px;
+    .sugg-menu-btn {
+      position: relative; z-index: 1;
       background: rgba(0,0,0,.35); border: none; cursor: pointer;
-      color: #fff; border-radius: 50%; width: 20px; height: 20px;
-      font-size: 13px; display: flex; align-items: center; justify-content: center;
+      color: #fff; border-radius: 50%; width: 22px; height: 22px;
+      font-size: 14px; display: flex; align-items: center; justify-content: center;
+      line-height: 1; align-self: flex-start;
     }
-    .sugg-name { font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 3px; }
-    .sugg-handle { font-size: 10px; color: var(--text-light); }
+
+    .sugg-info {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 10px 10px;
+      background: #fff;
+    }
+    .sugg-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 3px solid #fff;
+      background: #f0f0f0;
+      font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: -24px; /* overlap banner */
+      position: relative; z-index: 2;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+    .sugg-text { min-width: 0; }
+    .sugg-name {
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .sugg-name .vc {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 14px; height: 14px; background: var(--teal); border-radius: 50%;
+      color: #fff; font-size: 8px; font-weight: 900; flex-shrink: 0;
+    }
+    .sugg-handle { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* Pagination dots */
+    .sugg-dots {
+      display: flex; justify-content: center; gap: 5px; margin: 6px 0 14px;
+    }
+    .sugg-dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #ddd; display: block;
+    }
+    .sugg-dots span.on { background: var(--teal); }
 
     .right-footer {
-      margin-top: 10px; font-size: 10px; color: var(--text-light);
-      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-top: 4px; font-size: 11px; color: var(--muted);
+      display: flex; gap: 10px; flex-wrap: wrap;
     }
-    .right-footer a { color: var(--text-light); text-decoration: none; }
-    .right-footer a:hover { text-decoration: underline; }
+    .right-footer a { color: var(--muted); text-decoration: none; }
+    .right-footer a:hover { text-decoration: underline; color: var(--text); }
+    .right-footer span { color: #ccc; }
 
-    /* ── Like pop ── */
-    @keyframes pop { 0%,100% { transform: scale(1); } 50% { transform: scale(1.45); } }
-    .pop { animation: pop .2s ease; }
-
-    /* ── Scrollbar ── */
+    /* ─── Misc ─── */
+    @keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
+    .pop { animation: pop .18s ease; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
   </style>
 </head>
 <body>
@@ -322,388 +419,353 @@
 <div class="cookie-banner" id="cookieBanner">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
   <span>We use cookies to run this website. See our <a href="#">Cookie Notice</a>.</span>
-  <button class="btn-only" onclick="dismissBanner()">ONLY NECESSARY COOKIES</button>
-  <button class="btn-accept" onclick="dismissBanner()">ACCEPT ALL</button>
+  <button class="btn-necessary" onclick="dismissBanner()">ONLY NECESSARY COOKIES</button>
+  <button class="btn-accept-all" onclick="dismissBanner()">ACCEPT ALL</button>
 </div>
 
-<div class="app" id="app">
+<div class="page-push" id="pagePush">
+  <div class="layout">
 
-  <!-- Left Sidebar -->
-  <nav class="sidebar" id="sidebar">
-    <a class="logo" href="#">
-      <div class="logo-icon">🐾</div>
-      <div class="logo-text">Only<span>Cats</span></div>
-    </a>
+    <!-- ── Left Sidebar ── -->
+    <nav class="sidebar" id="sidebar">
+      <div class="user-badge">🐾</div>
 
-    <a class="nav-item active" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-      Notifications
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-      Messages
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-      Collections
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      Subscriptions
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-      Add Card
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      My Profile
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-      More
-    </a>
+      <a class="nav-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Notifications
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Messages
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Collections
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Subscriptions
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Add Card
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        More
+      </a>
 
-    <button class="nav-new-post" style="margin-top:20px">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      NEW POST
-    </button>
-  </nav>
+      <button class="nav-new-post">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        NEW POST
+      </button>
+    </nav>
 
-  <!-- Center Feed -->
-  <div class="feed-wrapper">
-    <div class="feed">
+    <!-- ── Center Feed ── -->
+    <main class="feed-col">
 
       <div class="feed-header" id="feedHeader">
         <h2>HOME</h2>
-        <button class="dots-btn">⋯</button>
+        <button class="icon-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </button>
       </div>
 
       <div class="composer">
-        <div class="composer-input">Create a new post …</div>
+        <div class="composer-text">Create a new post …</div>
         <div class="composer-actions">
-          <button title="Image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></button>
-          <button title="Poll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></button>
-          <button title="Upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg></button>
-          <button title="Text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></button>
+          <button class="icon-btn" title="Image">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </button>
+          <button class="icon-btn" title="Poll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="icon-btn" title="Upload">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+          </button>
+          <button class="icon-btn" title="Text style">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </button>
         </div>
       </div>
 
       <div class="filter-bar">
         <button class="filter-pill">All</button>
-        <button class="filter-edit">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <button class="icon-btn" style="margin-left:4px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>
         </button>
       </div>
 
-      <div class="email-banner">
-        <div class="left">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="verify-banner">
+        <div class="vb-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           Please verify your paw-mail address
         </div>
         <button class="btn-verify">VERIFY PAW-MAIL</button>
       </div>
 
-      <!-- Posts injected here -->
-      <div id="postsContainer"></div>
+      <div id="posts"></div>
 
-      <!-- Infinite scroll trigger -->
-      <div class="load-trigger" id="loadTrigger">
+      <div class="load-sentinel" id="sentinel">
         <div class="spinner" id="spinner"></div>
       </div>
 
-    </div>
-  </div>
+    </main>
 
-  <!-- Right Sidebar -->
-  <aside class="right-sidebar" id="rightSidebar">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Search posts" />
-    </div>
+    <!-- ── Right Sidebar ── -->
+    <aside class="right-col" id="rightCol">
 
-    <div class="sugg-header">
-      <h3>Suggestions</h3>
-      <div class="hs">
-        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
-        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
-        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search posts" />
       </div>
-    </div>
 
-    <div class="sugg-card" style="cursor:pointer">
-      <div class="sugg-bg" style="background:linear-gradient(135deg,#667eea,#764ba2)">😼</div>
-      <span class="sugg-free">FREE</span><button class="sugg-menu">⋯</button>
-      <div class="sugg-avatar">🐈‍⬛</div>
-      <div class="sugg-info">
-        <div class="sugg-name">Duchess Purrington <span class="verified" style="font-size:10px">✓</span></div>
-        <div class="sugg-handle">@duchess_p</div>
+      <div class="sugg-hdr">
+        <h3>Suggestions</h3>
+        <div class="sugg-hdr-btns">
+          <button title="Filter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
+          <button title="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+          <button title="Prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button title="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
       </div>
-    </div>
 
-    <div class="sugg-card">
-      <div class="sugg-bg" style="background:linear-gradient(135deg,#f093fb,#f5576c)">😻</div>
-      <span class="sugg-free">FREE</span><button class="sugg-menu">⋯</button>
-      <div class="sugg-avatar">🐱</div>
-      <div class="sugg-info">
-        <div class="sugg-name">Captain Whiskers <span class="verified" style="font-size:10px">✓</span></div>
-        <div class="sugg-handle">@captainwhiskers</div>
+      <!-- Suggestion cards -->
+      <div class="sugg-card">
+        <div class="sugg-banner" style="background:linear-gradient(120deg,#1a1a2e,#16213e,#0f3460)">
+          <div class="sugg-banner-bg">😼</div>
+          <span class="sugg-free">Free</span>
+          <button class="sugg-menu-btn">⋯</button>
+        </div>
+        <div class="sugg-info">
+          <div class="sugg-avatar" style="background:#e0d0ff">😼</div>
+          <div class="sugg-text">
+            <div class="sugg-name">Duchess Purrington <span class="vc">✓</span></div>
+            <div class="sugg-handle">@duchess_p</div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="sugg-card">
-      <div class="sugg-bg" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">😸</div>
-      <span class="sugg-free">FREE</span><button class="sugg-menu">⋯</button>
-      <div class="sugg-avatar">🐾</div>
-      <div class="sugg-info">
-        <div class="sugg-name">Ginger Snaps 🌟 <span class="verified" style="font-size:10px">✓</span></div>
-        <div class="sugg-handle">@ginger_snaps</div>
+      <div class="sugg-card">
+        <div class="sugg-banner" style="background:linear-gradient(120deg,#f8cdda,#1d2b64)">
+          <div class="sugg-banner-bg">😻</div>
+          <span class="sugg-free">Free</span>
+          <button class="sugg-menu-btn">⋯</button>
+        </div>
+        <div class="sugg-info">
+          <div class="sugg-avatar" style="background:#ffd0e0">😻</div>
+          <div class="sugg-text">
+            <div class="sugg-name">Captain Whiskers <span class="vc">✓</span></div>
+            <div class="sugg-handle">@captainwhiskers</div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="sugg-card">
-      <div class="sugg-bg" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🙀</div>
-      <span class="sugg-free">FREE</span><button class="sugg-menu">⋯</button>
-      <div class="sugg-avatar">😺</div>
-      <div class="sugg-info">
-        <div class="sugg-name">Sir Fluffington <span class="verified" style="font-size:10px">✓</span></div>
-        <div class="sugg-handle">@sir_fluffington</div>
+      <div class="sugg-card">
+        <div class="sugg-banner" style="background:linear-gradient(120deg,#134e5e,#71b280)">
+          <div class="sugg-banner-bg">😸</div>
+          <span class="sugg-free">Free</span>
+          <button class="sugg-menu-btn">⋯</button>
+        </div>
+        <div class="sugg-info">
+          <div class="sugg-avatar" style="background:#d0ffe0">😸</div>
+          <div class="sugg-text">
+            <div class="sugg-name">Ginger Snaps 🌟 <span class="vc">✓</span></div>
+            <div class="sugg-handle">@ginger_snaps</div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="right-footer">
-      <a href="#">Privacy</a>·<a href="#">Cookie Notice</a>·<a href="#">Terms of Service</a>
-    </div>
-  </aside>
+      <div class="sugg-dots">
+        <span class="on"></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
 
-</div>
+      <div class="right-footer">
+        <a href="#">Privacy</a><span>·</span>
+        <a href="#">Cookie Notice</a><span>·</span>
+        <a href="#">Terms of Service</a>
+      </div>
+    </aside>
+
+  </div><!-- /layout -->
+</div><!-- /page-push -->
 
 <script>
-  /* ─── Config ─── */
-  const API_BASE = 'https://cataas.com';
+  /* ── Config ── */
+  const API = 'https://cataas.com';
   const BATCH = 6;
 
-  /* ─── Cat personas ─── */
+  /* ── Cat personas ── */
   const CREATORS = [
-    { name: 'Princess Mittens 🌸', handle: 'princess_mittens', emoji: '🐈‍⬛', bg: '#ff9a9e' },
-    { name: 'Chairman Meow 🔴', handle: 'chairman_meow', emoji: '😾', bg: '#a18cd1' },
-    { name: 'Biscuit Baker 🧁', handle: 'biscuit_baker', emoji: '🐾', bg: '#fda085' },
-    { name: 'Duchess Purrington', handle: 'duchess_purrington', emoji: '😼', bg: '#667eea' },
-    { name: 'Sir Fluffington 🎩', handle: 'sir_fluffington', emoji: '🐱', bg: '#43e97b' },
-    { name: 'Captain Whiskers ⚓', handle: 'captainwhiskers', emoji: '😸', bg: '#4facfe' },
-    { name: 'Ginger Snaps 🌟', handle: 'ginger_snaps', emoji: '🙀', bg: '#f093fb' },
-    { name: 'Lord Fluffybottom', handle: 'lord_fluffybottom', emoji: '😺', bg: '#f5576c' },
-    { name: 'Countess Purrfect ✨', handle: 'countess_purrfect', emoji: '🐈', bg: '#38f9d7' },
-    { name: 'Whiskers McGee', handle: 'whiskersmcgee', emoji: '😻', bg: '#00f2fe' },
+    { name: 'Princess Mittens 🌸', handle: 'princess_mittens', emoji: '🐈‍⬛', bg: '#ffb6c1' },
+    { name: 'Chairman Meow', handle: 'chairman_meow', emoji: '😾', bg: '#c9b8f5' },
+    { name: 'Biscuit Baker 🧁', handle: 'biscuit_baker', emoji: '🐾', bg: '#ffc49b' },
+    { name: 'Duchess Purrington', handle: 'duchess_p', emoji: '😼', bg: '#b8c4ff' },
+    { name: 'Sir Fluffington 🎩', handle: 'sir_fluffington', emoji: '🐱', bg: '#b8ffd8' },
+    { name: 'Captain Whiskers ⚓', handle: 'captainwhiskers', emoji: '😸', bg: '#b8e8ff' },
+    { name: 'Ginger Snaps 🌟', handle: 'ginger_snaps', emoji: '🙀', bg: '#f5b8ff' },
+    { name: 'Lord Fluffybottom', handle: 'lord_fluffy', emoji: '😺', bg: '#ffb8b8' },
+    { name: 'Countess Purrfect ✨', handle: 'countess_p', emoji: '🐈', bg: '#b8fff5' },
+    { name: 'Whiskers McGee', handle: 'whiskersmcgee', emoji: '😻', bg: '#ffe8b8' },
   ];
 
-  /* ─── Post captions ─── */
-  const CAPTIONS = [
+  /* ── Captions ── */
+  const CAPS = [
     'Just spent 14 hours perfecting the sunbeam nap. My form has never been better. 🌞😴',
     'The humans tried to move me from the laptop keyboard. I simply sat down harder. 💻🐾',
-    'Making biscuits at 3am is not a phase, it is a lifestyle and I will not be taking questions. 🫳',
+    'Making biscuits at 3am is not a phase, it is a lifestyle. I will not be taking questions. 🫳',
     'I knocked everything off the counter. Not because I had to — because I could. 😤',
     'New exclusive content: me sitting in a box that is clearly too small. Subscribe now 📦',
     'Running full zoomies at 2am. The carpet had it coming. 🌙💨',
-    'Staring into the void for 47 minutes. Found nothing. Stared for 13 more just to be sure. 👁️',
-    'Brought the humans a gift at 4am. They did not seem grateful. Their loss 🐭',
+    'Stared into the void for 47 minutes. Found nothing. Stared 13 more just to be sure. 👁️',
+    'Brought the humans a gift at 4am. They did not seem grateful. Their loss. 🐭',
     'The forbidden zone (the kitchen counter) was entered. No regrets. 🍗',
-    'Loaf mode activated. I am bread now. I have always been bread. 🍞',
-    'Fell off the couch while doing my morning stretch. Meant to do that. 😤',
+    'Loaf mode: activated. I am bread now. I have always been bread. 🍞',
+    'Fell off the couch while stretching. Meant to do that. 😤',
     'The red dot has eluded me again. But I am patient. I am eternal. 🔴',
-    'Exclusive behind-the-scenes content: me judging you from the top of the fridge. 🧊',
+    'Behind-the-scenes: me judging you from the top of the fridge. 🧊',
     'Performed the sacred ritual of knocking over a full glass of water. Felt incredible. 💧',
     'Three-hour grooming session. I look exactly the same. Worth it. ✨',
     'Sat on my human\'s face at 5am. They seemed surprised. I was not. 😌',
-    'Today I discovered the printer. We are now enemies. 🖨️😾',
-    'Brought my toy mouse to the food bowl. In case anyone was hungry. You\'re welcome 🐭',
-    'The curtains were climbed today. Justice was served. The curtains know what they did. 🪟',
-    'Perfected the slow blink. The humans melt every time. It\'s called power. 😏',
+    'Today I discovered the printer. We are enemies now. 🖨️😾',
+    'Brought my toy mouse to the food bowl. In case anyone was hungry. You\'re welcome. 🐭',
+    'The curtains were climbed today. Justice was served. 🪟',
+    'Perfected the slow blink. It\'s called power. The humans melt every time. 😏',
   ];
 
-  /* ─── Time labels ─── */
   const TIMES = ['just now', '3 min ago', '12 min ago', '34 min ago', '1h ago', '2h ago', '5h ago', '7h ago', 'Yesterday', '2 days ago'];
 
-  /* ─── State ─── */
-  let skip = 0;
-  let loading = false;
-  let catIds = [];   // fetched from /api/cats
-  let catIdIndex = 0;
-  let creatorIndex = 0;
+  /* ── State ── */
+  let skip = 0, loading = false, creatorIdx = 0;
 
-  /* ─── DOM refs ─── */
-  const container = document.getElementById('postsContainer');
-  const spinner = document.getElementById('spinner');
-  const trigger = document.getElementById('loadTrigger');
+  const postsEl  = document.getElementById('posts');
+  const spinnerEl = document.getElementById('spinner');
+  const sentinel = document.getElementById('sentinel');
 
-  /* ─── Helpers ─── */
-  function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  const rnd = arr => arr[Math.floor(Math.random() * arr.length)];
+  const rint = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 
-  function nextCreator() {
-    const c = CREATORS[creatorIndex % CREATORS.length];
-    creatorIndex++;
-    return c;
-  }
-
-  /* ─── Fetch a batch of cat IDs from /api/cats ─── */
-  async function fetchCatIds(count) {
-    // cataas /api/cats supports skip & limit
+  /* ── Fetch cat IDs ── */
+  async function fetchIds(n) {
     try {
-      const res = await fetch(`${API_BASE}/api/cats?skip=${skip}&limit=${count}`);
-      if (!res.ok) throw new Error('api error');
-      const data = await res.json();
+      const r = await fetch(`${API}/api/cats?skip=${skip}&limit=${n}`);
+      if (!r.ok) throw 0;
+      const data = await r.json();
       skip += data.length;
       return data.map(c => c._id || c.id);
     } catch {
-      // fallback: return nulls so we use random endpoint
-      skip += count;
-      return Array(count).fill(null);
+      skip += n;
+      return Array(n).fill(null);
     }
   }
 
-  /* ─── Build image URL ─── */
-  function imgUrl(id) {
-    if (id) return `${API_BASE}/cat/${id}`;
-    return `${API_BASE}/cat`; // random fallback
-  }
+  /* ── Build one post ── */
+  function buildPost(id) {
+    const c   = CREATORS[creatorIdx++ % CREATORS.length];
+    const cap = rnd(CAPS);
+    const t   = rnd(TIMES);
+    const likes = rint(8, 912);
+    const free  = Math.random() > .3;
+    const src   = id ? `${API}/cat/${id}` : `${API}/cat?v=${Date.now()}`;
 
-  /* ─── Create a post DOM element ─── */
-  function buildPost(catId) {
-    const creator = nextCreator();
-    const caption = rand(CAPTIONS);
-    const time = rand(TIMES);
-    const likes = randInt(12, 847);
-    const isFree = Math.random() > 0.35;
-
-    const card = document.createElement('div');
-    card.className = 'post-card';
-
-    // Collect random tag labels for display (just decorative)
-    const tagWords = ['cute', 'sleepy', 'funny', 'fluffy', 'grumpy', 'zoomies', 'loaf', 'biscuits', 'chaos', 'sunbeam'];
-    const numTags = randInt(1, 3);
-    const tags = [];
-    for (let i = 0; i < numTags; i++) {
-      const t = rand(tagWords);
-      if (!tags.includes(t)) tags.push(t);
-    }
-    const tagsHtml = tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');
-
-    card.innerHTML = `
+    const el = document.createElement('div');
+    el.className = 'post-card';
+    el.innerHTML = `
       <div class="post-header">
-        <div class="post-avatar" style="background:${creator.bg}">${creator.emoji}</div>
+        <div class="post-avatar" style="background:${c.bg}">${c.emoji}</div>
         <div class="post-meta">
-          <div class="post-name">${creator.name} <span class="verified">✓</span></div>
-          <div class="post-handle">@${creator.handle}</div>
+          <div class="post-name">${c.name} <span class="vc">✓</span></div>
+          <div class="post-handle">@${c.handle}</div>
         </div>
-        <div class="post-time-menu">
-          <span class="post-time">${time}</span>
-          <button class="menu-btn">⋯</button>
+        <div class="post-right">
+          <span class="post-time">${t}</span>
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
         </div>
       </div>
-      <div class="post-body">${caption}</div>
-      <div class="tags-row">${tagsHtml}</div>
-      <div class="cat-img-wrap">
-        <div class="img-shimmer" id="shimmer-${catId || Math.random()}"></div>
-        ${isFree ? '<span class="free-tag">FREE</span>' : ''}
-        <img src="${imgUrl(catId)}" alt="cat photo" class="loading" />
+      <div class="post-body">${cap}</div>
+      <div class="cat-wrap">
+        <div class="shimmer"></div>
+        ${free ? '<span class="free-badge">FREE</span>' : ''}
+        <img src="${src}" alt="cat" />
       </div>
       <div class="post-actions">
-        <button class="action-btn" onclick="toggleLike(this)">
+        <button class="act" onclick="toggleLike(this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         </button>
-        <button class="action-btn">
+        <button class="act">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </button>
-        <button class="tip-btn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <button class="act-tip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
           SEND TIP
         </button>
-        <button class="bookmark-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        <button class="act-bm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
         </button>
       </div>
       <div class="post-likes">${likes} purrs</div>
     `;
 
-    // Image load handler — remove shimmer, fade in
-    const img = card.querySelector('img');
-    const shimmerId = img.previousElementSibling.id;
+    const img = el.querySelector('img');
     img.addEventListener('load', () => {
-      img.classList.remove('loading');
-      img.classList.add('loaded');
-      const sh = img.parentElement.querySelector('.img-shimmer');
+      img.classList.add('in');
+      const sh = img.parentElement.querySelector('.shimmer');
       if (sh) sh.remove();
     });
     img.addEventListener('error', () => {
-      // retry once with pure random endpoint
-      if (!img.dataset.retried) {
-        img.dataset.retried = '1';
-        img.src = `${API_BASE}/cat?v=${Date.now()}`;
-      } else {
-        img.parentElement.innerHTML = '<div style="height:240px;display:flex;align-items:center;justify-content:center;font-size:72px">🐱</div>';
-      }
+      if (!img.dataset.r) { img.dataset.r = '1'; img.src = `${API}/cat?v=${Date.now()}`; }
+      else { img.parentElement.innerHTML = '<div style="height:260px;display:flex;align-items:center;justify-content:center;font-size:80px">🐱</div>'; }
     });
-
-    return card;
+    return el;
   }
 
-  /* ─── Load a batch of posts ─── */
+  /* ── Load batch ── */
   async function loadBatch() {
     if (loading) return;
     loading = true;
-    spinner.classList.remove('hidden');
-
-    const ids = await fetchCatIds(BATCH);
-    const fragment = document.createDocumentFragment();
-    ids.forEach(id => fragment.appendChild(buildPost(id)));
-    container.appendChild(fragment);
-
+    spinnerEl.classList.remove('hide');
+    const ids = await fetchIds(BATCH);
+    const frag = document.createDocumentFragment();
+    ids.forEach(id => frag.appendChild(buildPost(id)));
+    postsEl.appendChild(frag);
     loading = false;
-    spinner.classList.add('hidden');
+    spinnerEl.classList.add('hide');
   }
 
-  /* ─── IntersectionObserver for infinite scroll ─── */
-  const observer = new IntersectionObserver((entries) => {
+  /* ── IntersectionObserver ── */
+  new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) loadBatch();
-  }, { rootMargin: '300px' });
+  }, { rootMargin: '400px' }).observe(sentinel);
 
-  observer.observe(trigger);
-
-  /* ─── Like toggle ─── */
+  /* ── Like ── */
   function toggleLike(btn) {
     btn.classList.toggle('liked');
     const svg = btn.querySelector('svg');
-    if (btn.classList.contains('liked')) {
-      svg.setAttribute('fill', '#e0245e');
-      svg.setAttribute('stroke', '#e0245e');
-    } else {
-      svg.setAttribute('fill', 'none');
-      svg.setAttribute('stroke', 'currentColor');
-    }
+    const on = btn.classList.contains('liked');
+    svg.setAttribute('fill', on ? '#e0245e' : 'none');
+    svg.setAttribute('stroke', on ? '#e0245e' : 'currentColor');
     btn.classList.add('pop');
     btn.addEventListener('animationend', () => btn.classList.remove('pop'), { once: true });
-
-    const likesEl = btn.closest('.post-card').querySelector('.post-likes');
-    const n = parseInt(likesEl.textContent);
-    const delta = btn.classList.contains('liked') ? 1 : -1;
-    likesEl.textContent = (n + delta) + ' purrs';
+    const el = btn.closest('.post-card').querySelector('.post-likes');
+    const n = parseInt(el.textContent);
+    el.textContent = (n + (on ? 1 : -1)) + ' purrs';
   }
 
-  /* ─── Cookie banner ─── */
+  /* ── Cookie banner ── */
   function dismissBanner() {
-    const banner = document.getElementById('cookieBanner');
-    banner.classList.add('hidden');
-    const app = document.getElementById('app');
-    app.classList.add('no-banner');
-    // update all fixed elements
+    document.getElementById('cookieBanner').classList.add('gone');
+    document.getElementById('pagePush').style.paddingTop = '0';
     document.getElementById('sidebar').style.top = '0';
-    document.getElementById('rightSidebar').style.top = '0';
+    document.getElementById('rightCol').style.top = '0';
     document.getElementById('feedHeader').style.top = '0';
     document.documentElement.style.setProperty('--banner-h', '0px');
   }
