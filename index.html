@@ -1102,7 +1102,7 @@
   }
   async function submitCSForm() {
     const email = document.getElementById('csEmail').value.trim();
-    if (!email || !email.includes('@')) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       document.getElementById('csEmail').focus();
       document.getElementById('csEmail').style.borderColor = '#f04';
       setTimeout(() => document.getElementById('csEmail').style.borderColor = '', 1200);
